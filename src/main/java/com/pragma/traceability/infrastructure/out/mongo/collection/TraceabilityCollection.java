@@ -2,6 +2,7 @@ package com.pragma.traceability.infrastructure.out.mongo.collection;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -14,6 +15,9 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 public class TraceabilityCollection {
+
+    @Transient
+    public static final String SEQUENCE_NAME = "traceability_sequence";
 
     @Id
     private Long id;
