@@ -1,6 +1,7 @@
 package com.pragma.traceability.application.handler.impl;
 
 import com.pragma.traceability.application.dto.request.CreateTraceabilityRequestDto;
+import com.pragma.traceability.application.dto.response.EmployeeEfficiencyResponseDto;
 import com.pragma.traceability.application.dto.response.RestaurantEfficiencyResponseDto;
 import com.pragma.traceability.application.dto.response.TraceabilityResponseDto;
 import com.pragma.traceability.application.handler.ITraceabilityHandler;
@@ -44,6 +45,13 @@ public class TraceabilityHandler implements ITraceabilityHandler {
     public List<RestaurantEfficiencyResponseDto> getRestaurantEfficiency(List<Long> orderIds) {
         return traceabilityServicePort.getRestaurantEfficiency(orderIds).stream()
                 .map(restaurantEfficiency -> modelMapper.map(restaurantEfficiency, RestaurantEfficiencyResponseDto.class)).
+                toList();
+    }
+
+    @Override
+    public List<EmployeeEfficiencyResponseDto> getEmployeeEfficiency(List<Long> employeeIds) {
+        return traceabilityServicePort.getEmployeeEfficiency(employeeIds).stream()
+                .map(employeeEfficiency -> modelMapper.map(employeeEfficiency, EmployeeEfficiencyResponseDto.class)).
                 toList();
     }
 }
