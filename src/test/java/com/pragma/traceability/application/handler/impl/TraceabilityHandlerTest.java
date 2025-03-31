@@ -1,8 +1,10 @@
 package com.pragma.traceability.application.handler.impl;
 
 import com.pragma.traceability.application.dto.request.CreateTraceabilityRequestDto;
+import com.pragma.traceability.application.dto.response.RestaurantEfficiencyResponseDto;
 import com.pragma.traceability.application.dto.response.TraceabilityResponseDto;
 import com.pragma.traceability.domain.api.ITraceabilityServicePort;
+import com.pragma.traceability.domain.model.RestaurantEfficiency;
 import com.pragma.traceability.domain.model.Traceability;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -140,5 +142,52 @@ class TraceabilityHandlerTest {
         assertEquals(responseTraceability.getEmployeeId(), result.get(0).getEmployeeId());
         assertEquals(responseTraceability.getEmployeeEmail(), result.get(0).getEmployeeEmail());
 
+    }
+
+    @Test
+    void getRestaurantEfficiency_WhenIsSuccessful() {
+        List<Long> orderIds = List.of(1L, 2L);
+
+        RestaurantEfficiency restaurantEfficiency1 = RestaurantEfficiency.builder()
+                .orderId(orderIds.get(0))
+                .finalStatus("finalStatus")
+                .orderDurationInMinutes(23)
+                .build();
+
+        RestaurantEfficiency restaurantEfficiency2 = RestaurantEfficiency.builder()
+                .orderId(orderIds.get(0))
+                .finalStatus("finalStatus")
+                .orderDurationInMinutes(23)
+                .build();
+
+        RestaurantEfficiencyResponseDto restaurantEfficiencyDto1 = RestaurantEfficiencyResponseDto.builder()
+                .orderId(orderIds.get(0))
+                .finalStatus("finalStatus")
+                .orderDurationInMinutes(23)
+                .build();
+
+        RestaurantEfficiencyResponseDto restaurantEfficiencyDto2 = RestaurantEfficiencyResponseDto.builder()
+                .orderId(orderIds.get(0))
+                .finalStatus("finalStatus")
+                .orderDurationInMinutes(23)
+                .build();
+
+        List<RestaurantEfficiency> restaurantEfficiencies = List.of(restaurantEfficiency1, restaurantEfficiency2);
+
+        when(traceabilityServicePort.getRestaurantEfficiency(orderIds))
+                .thenReturn(restaurantEfficiencies);
+        when(modelMapper.map(restaurantEfficiency1, RestaurantEfficiencyResponseDto.class))
+                .thenReturn(restaurantEfficiencyDto1);
+        when(modelMapper.map(restaurantEfficiency2, RestaurantEfficiencyResponseDto.class))
+                .thenReturn(restaurantEfficiencyDto2);
+
+        List<RestaurantEfficiencyResponseDto> result = traceabilityHandler.getRestaurantEfficiency(orderIds);
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals(restaurantEfficiencyDto1.getOrderId(), result.get(0).getOrderId());
+        assertEquals(restaurantEfficiencyDto1.getFinalStatus(), result.get(0).getFinalStatus());
+        assertEquals(restaurantEfficiencyDto2.getOrderId(), result.get(1).getOrderId());
+        assertEquals(restaurantEfficiencyDto2.getFinalStatus(), result.get(1).getFinalStatus());
     }
 }
