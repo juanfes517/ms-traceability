@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -71,7 +72,9 @@ public class TraceabilityUseCase implements ITraceabilityServicePort {
             }
         }
 
-        return employeeEfficiencies;
+        return employeeEfficiencies.stream()
+                .sorted(Comparator.comparingDouble(EmployeeEfficiency::getAverageProcessingTimeInSeconds))
+                .toList();
     }
 
     private EmployeeEfficiency createEmployeeEfficiency(List<Traceability> traceabilityPreparing, List<Traceability> traceabilityDelivered) {
