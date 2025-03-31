@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Builder
 public class TraceabilityResponseDto {
 
-    private Long id;
     private Long orderId;
     private Long customerId;
     private String customerEmail;
