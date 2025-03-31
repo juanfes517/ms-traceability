@@ -158,4 +158,57 @@ class TraceabilityMongoAdapterTest {
         assertEquals(traceabilityCollections.get(0).getEmployeeId(), result.get(0).getEmployeeId());
         assertEquals(traceabilityCollections.get(0).getEmployeeEmail(), result.get(0).getEmployeeEmail());
     }
+
+    @Test
+    void findAllByEmployeeIdAndNewStatus_whenIsSuccesful() {
+        Long employeeId = 2L;
+        String newStatus = "Status";
+
+        LocalDateTime date = LocalDateTime.now();
+
+        TraceabilityCollection traceabilityCollection1 = TraceabilityCollection.builder()
+                .id(1L)
+                .orderId(1L)
+                .customerId(1L)
+                .customerEmail("customer@mail.com")
+                .date(date)
+                .previousStatus("previousStatus")
+                .newStatus(newStatus)
+                .employeeId(employeeId)
+                .employeeEmail("employee@mail.com")
+                .build();
+
+        Traceability traceability1 = Traceability.builder()
+                .id(1L)
+                .orderId(1L)
+                .customerId(1L)
+                .customerEmail("customer@mail.com")
+                .date(date)
+                .previousStatus("previousStatus")
+                .newStatus(newStatus)
+                .employeeId(employeeId)
+                .employeeEmail("employee@mail.com")
+                .build();
+
+        List<TraceabilityCollection> traceabilityCollections = List.of(traceabilityCollection1);
+
+        when(traceabilityRepository.findAllByEmployeeIdAndNewStatus(employeeId, newStatus))
+                .thenReturn(traceabilityCollections);
+        when(modelMapper.map(traceabilityCollection1, Traceability.class))
+                .thenReturn(traceability1);
+
+        List<Traceability> result = traceabilityMongoAdapter.findAllByEmployeeIdAndNewStatus(employeeId, newStatus);
+
+        assertNotNull(result);
+        assertEquals(traceabilityCollections.size(), result.size());
+        assertEquals(traceabilityCollections.get(0).getId(), result.get(0).getId());
+        assertEquals(traceabilityCollections.get(0).getOrderId(), result.get(0).getOrderId());
+        assertEquals(traceabilityCollections.get(0).getCustomerId(), result.get(0).getCustomerId());
+        assertEquals(traceabilityCollections.get(0).getCustomerEmail(), result.get(0).getCustomerEmail());
+        assertEquals(traceabilityCollections.get(0).getDate(), result.get(0).getDate());
+        assertEquals(traceabilityCollections.get(0).getPreviousStatus(), result.get(0).getPreviousStatus());
+        assertEquals(traceabilityCollections.get(0).getNewStatus(), result.get(0).getNewStatus());
+        assertEquals(traceabilityCollections.get(0).getEmployeeId(), result.get(0).getEmployeeId());
+        assertEquals(traceabilityCollections.get(0).getEmployeeEmail(), result.get(0).getEmployeeEmail());
+    }
 }
