@@ -2,6 +2,7 @@ package com.pragma.traceability.domain.usecase;
 
 import com.pragma.traceability.domain.exception.OrderNotFromCustomerException;
 import com.pragma.traceability.domain.helper.constants.ExceptionConstants;
+import com.pragma.traceability.domain.model.EmployeeEfficiency;
 import com.pragma.traceability.domain.model.RestaurantEfficiency;
 import com.pragma.traceability.domain.model.Traceability;
 import com.pragma.traceability.domain.spi.IJwtSecurityServicePort;
@@ -261,5 +262,74 @@ class TraceabilityUseCaseTest {
 
         assertNotNull(result);
         assertEquals(0, result.size());
+    }
+
+    @Test
+    void getEmployeeEfficiency_WhenIsSuccessful() {
+
+        Long employeeId = 1L;
+        String employeeEmail = "employee@mail.com";
+        List<Long> employeeIds = List.of(employeeId);
+
+        Traceability traceabilityPreparing1 = Traceability.builder()
+                .id(1L)
+                .orderId(1L)
+                .customerId(1L)
+                .customerEmail("customer@mail.com")
+                .date(LocalDateTime.now())
+                .previousStatus("PENDING")
+                .newStatus("PREPARING")
+                .employeeId(employeeId)
+                .employeeEmail(employeeEmail)
+                .build();
+
+        Traceability traceabilityPreparing2 = Traceability.builder()
+                .id(1L)
+                .orderId(1L)
+                .customerId(1L)
+                .customerEmail("customer@mail.com")
+                .date(LocalDateTime.now())
+                .previousStatus("PENDING")
+                .newStatus("PREPARING")
+                .employeeId(employeeId)
+                .employeeEmail(employeeEmail)
+                .build();
+
+        Traceability traceabilityDelivered1 = Traceability.builder()
+                .id(1L)
+                .orderId(1L)
+                .customerId(1L)
+                .customerEmail("customer@mail.com")
+                .date(LocalDateTime.now())
+                .previousStatus("READY")
+                .newStatus("DELIVERED")
+                .employeeId(employeeId)
+                .employeeEmail(employeeEmail)
+                .build();
+
+        Traceability traceabilityDelivered2 = Traceability.builder()
+                .id(1L)
+                .orderId(1L)
+                .customerId(1L)
+                .customerEmail("customer@mail.com")
+                .date(LocalDateTime.now())
+                .previousStatus("READY")
+                .newStatus("DELIVERED")
+                .employeeId(employeeId)
+                .employeeEmail(employeeEmail)
+                .build();
+
+        List<Traceability> traceabilityPreparing = List.of(traceabilityPreparing1, traceabilityPreparing2);
+        List<Traceability> traceabilityDelivered = List.of(traceabilityDelivered1, traceabilityDelivered2);
+
+        when(traceabilityPersistencePort.findAllByEmployeeIdAndNewStatus(employeeId, "PREPARING"))
+                .thenReturn(traceabilityPreparing);
+        when(traceabilityPersistencePort.findAllByEmployeeIdAndNewStatus(employeeId, "DELIVERED"))
+                .thenReturn(traceabilityDelivered);
+
+        List<EmployeeEfficiency> result = traceabilityUseCase.getEmployeeEfficiency(employeeIds);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
     }
 }
