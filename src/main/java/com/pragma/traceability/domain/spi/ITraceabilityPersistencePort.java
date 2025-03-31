@@ -9,4 +9,6 @@ public interface ITraceabilityPersistencePort {
     Traceability save(Traceability traceability);
 
     List<Traceability> findAllByOrderId(Long orderId);
+
+    List<Traceability> findAllByEmployeeIdAndNewStatus(Long employeeId, String newStatus);
 }
