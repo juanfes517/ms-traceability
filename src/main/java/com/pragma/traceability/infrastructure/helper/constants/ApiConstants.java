@@ -7,6 +7,7 @@ public class ApiConstants {
     public static final String CREATE_TRACEABILITY_DESCRIPTION = "Create a new traceability";
     public static final String GET_TRACEABILITY_DESCRIPTION = "Get all traceability by order id";
     public static final String GET_RESTAURANT_EFFICIENCY_DESCRIPTION = "Get the efficiency of all order of the restaurant";
+    public static final String GET_EMPLOYEE_EFFICIENCY_DESCRIPTION = "Get the efficiency of all employees of the restaurant";
 
     public static final String OK_DESCRIPTION = "Request successful";
     public static final String OBJECT_CREATED_DESCRIPTION = "Object created";

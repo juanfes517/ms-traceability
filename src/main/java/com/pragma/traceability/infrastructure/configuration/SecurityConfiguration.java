@@ -28,6 +28,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(http -> {
                     http.requestMatchers(SecurityConstants.getPublicEndpoints()).permitAll();
                     http.requestMatchers(SecurityConstants.getCustomerEndpoints()).hasRole(SecurityConstants.CUSTOMER_ROLE);
+                    http.requestMatchers(SecurityConstants.getOwnerEndpoints()).hasRole(SecurityConstants.OWNER_ROLE);
                     http.anyRequest().authenticated();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtSecurityServicePort), BasicAuthenticationFilter.class)

@@ -1,6 +1,7 @@
 package com.pragma.traceability.infrastructure.input.rest;
 
 import com.pragma.traceability.application.dto.request.CreateTraceabilityRequestDto;
+import com.pragma.traceability.application.dto.response.EmployeeEfficiencyResponseDto;
 import com.pragma.traceability.application.dto.response.RestaurantEfficiencyResponseDto;
 import com.pragma.traceability.application.dto.response.TraceabilityResponseDto;
 import com.pragma.traceability.application.handler.ITraceabilityHandler;
@@ -48,7 +49,7 @@ public class TraceabilityController {
         return ResponseEntity.ok(traceabilityHandler.getOrderTraceability(orderId));
     }
 
-    @Operation(summary = ApiConstants.GET_TRACEABILITY_DESCRIPTION)
+    @Operation(summary = ApiConstants.GET_RESTAURANT_EFFICIENCY_DESCRIPTION)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = ApiConstants.OK_DESCRIPTION, content = @Content),
             @ApiResponse(responseCode = "403", description = ApiConstants.FORBIDDEN_DESCRIPTION, content = @Content)
@@ -56,5 +57,15 @@ public class TraceabilityController {
     @GetMapping("/restaurant-efficiency")
     public ResponseEntity<List<RestaurantEfficiencyResponseDto>> getRestaurantEfficiency(@RequestParam List<Long> orderIds) {
         return ResponseEntity.ok(traceabilityHandler.getRestaurantEfficiency(orderIds));
+    }
+
+    @Operation(summary = ApiConstants.GET_EMPLOYEE_EFFICIENCY_DESCRIPTION)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = ApiConstants.OK_DESCRIPTION, content = @Content),
+            @ApiResponse(responseCode = "403", description = ApiConstants.FORBIDDEN_DESCRIPTION, content = @Content)
+    })
+    @GetMapping("/employee-efficiency")
+    public ResponseEntity<List<EmployeeEfficiencyResponseDto>> getEmployeeEfficiency(@RequestParam List<Long> employeeIds) {
+        return ResponseEntity.ok(traceabilityHandler.getEmployeeEfficiency(employeeIds));
     }
 }
