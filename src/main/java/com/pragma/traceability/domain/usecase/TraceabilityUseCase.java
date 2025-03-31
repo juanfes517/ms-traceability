@@ -63,7 +63,7 @@ public class TraceabilityUseCase implements ITraceabilityServicePort {
         Duration orderDuration = Duration.between(firstTraceability.getDate(), finalTraceability.getDate());
         return RestaurantEfficiency.builder()
                 .orderId(firstTraceability.getOrderId())
-                .orderDurationInMinutes(orderDuration.toMinutes())
+                .orderDurationInSeconds(orderDuration.toSeconds())
                 .finalStatus(finalTraceability.getNewStatus())
                 .build();
     }
@@ -77,7 +77,7 @@ public class TraceabilityUseCase implements ITraceabilityServicePort {
 
     private Traceability obtainFinalTraceabilityOfTheOrder(List<Traceability> traceability) {
         return traceability.stream()
-                .filter(t -> t.getNewStatus().equals("DELIVERED") || t.getNewStatus().equals("CANCELLED"))
+                .filter(t -> t.getNewStatus().equals("DELIVERED") || t.getNewStatus().equals("CANCELED"))
                 .findFirst()
                 .orElse(null);
     }

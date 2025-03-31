@@ -151,25 +151,25 @@ class TraceabilityHandlerTest {
         RestaurantEfficiency restaurantEfficiency1 = RestaurantEfficiency.builder()
                 .orderId(orderIds.get(0))
                 .finalStatus("finalStatus")
-                .orderDurationInMinutes(23)
+                .orderDurationInSeconds(23)
                 .build();
 
         RestaurantEfficiency restaurantEfficiency2 = RestaurantEfficiency.builder()
                 .orderId(orderIds.get(0))
                 .finalStatus("finalStatus")
-                .orderDurationInMinutes(23)
+                .orderDurationInSeconds(23)
                 .build();
 
         RestaurantEfficiencyResponseDto restaurantEfficiencyDto1 = RestaurantEfficiencyResponseDto.builder()
                 .orderId(orderIds.get(0))
                 .finalStatus("finalStatus")
-                .orderDurationInMinutes(23)
+                .orderDurationInSeconds(23)
                 .build();
 
         RestaurantEfficiencyResponseDto restaurantEfficiencyDto2 = RestaurantEfficiencyResponseDto.builder()
                 .orderId(orderIds.get(0))
                 .finalStatus("finalStatus")
-                .orderDurationInMinutes(23)
+                .orderDurationInSeconds(23)
                 .build();
 
         List<RestaurantEfficiency> restaurantEfficiencies = List.of(restaurantEfficiency1, restaurantEfficiency2);

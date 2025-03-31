@@ -10,6 +10,6 @@ import lombok.*;
 public class RestaurantEfficiencyResponseDto {
 
     private Long orderId;
-    private double orderDurationInMinutes;
+    private double orderDurationInSeconds;
     private String finalStatus;
 }
