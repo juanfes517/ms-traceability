@@ -2,6 +2,7 @@ package com.pragma.traceability.infrastructure.configuration;
 
 import com.pragma.traceability.domain.spi.IJwtSecurityServicePort;
 import com.pragma.traceability.infrastructure.configuration.securityfilter.JwtTokenValidator;
+import com.pragma.traceability.infrastructure.helper.constants.SecurityConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +27,9 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
-                    http.anyRequest().permitAll();
+                    http.requestMatchers(SecurityConstants.getPublicEndpoints()).permitAll();
+                    http.requestMatchers(SecurityConstants.getCustomerEndpoints()).hasRole(SecurityConstants.CUSTOMER_ROLE);
+                    http.anyRequest().authenticated();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtSecurityServicePort), BasicAuthenticationFilter.class)
                 .build();
