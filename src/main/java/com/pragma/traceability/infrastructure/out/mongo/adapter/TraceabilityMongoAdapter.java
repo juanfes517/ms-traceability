@@ -23,7 +23,7 @@ public class TraceabilityMongoAdapter implements ITraceabilityPersistencePort {
     public Traceability save(Traceability traceability) {
         TraceabilityCollection mappedTraceabilityCollection = modelMapper.map(traceability, TraceabilityCollection.class);
         Long id = sequenceGeneratorService.generateSequence(TraceabilityCollection.SEQUENCE_NAME);
-        System.out.println(id + "-----------------------------------");
+
         mappedTraceabilityCollection.setId(id);
         TraceabilityCollection savedTraceabilityCollection = traceabilityRepository.save(mappedTraceabilityCollection);
 
