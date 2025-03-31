@@ -7,10 +7,14 @@ import com.pragma.traceability.domain.api.ITraceabilityServicePort;
 import com.pragma.traceability.domain.model.Traceability;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
+@Transactional
 @RequiredArgsConstructor
 public class TraceabilityHandler implements ITraceabilityHandler {
 
