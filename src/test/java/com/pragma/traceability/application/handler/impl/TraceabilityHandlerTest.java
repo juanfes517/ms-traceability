@@ -1,9 +1,11 @@
 package com.pragma.traceability.application.handler.impl;
 
 import com.pragma.traceability.application.dto.request.CreateTraceabilityRequestDto;
+import com.pragma.traceability.application.dto.response.EmployeeEfficiencyResponseDto;
 import com.pragma.traceability.application.dto.response.RestaurantEfficiencyResponseDto;
 import com.pragma.traceability.application.dto.response.TraceabilityResponseDto;
 import com.pragma.traceability.domain.api.ITraceabilityServicePort;
+import com.pragma.traceability.domain.model.EmployeeEfficiency;
 import com.pragma.traceability.domain.model.RestaurantEfficiency;
 import com.pragma.traceability.domain.model.Traceability;
 import org.junit.jupiter.api.Test;
@@ -189,5 +191,53 @@ class TraceabilityHandlerTest {
         assertEquals(restaurantEfficiencyDto1.getFinalStatus(), result.get(0).getFinalStatus());
         assertEquals(restaurantEfficiencyDto2.getOrderId(), result.get(1).getOrderId());
         assertEquals(restaurantEfficiencyDto2.getFinalStatus(), result.get(1).getFinalStatus());
+    }
+
+    @Test
+    void getEmployeeEfficiency() {
+
+        List<Long> employeeIds = List.of(1L, 2L);
+
+        EmployeeEfficiency employeeEfficiency1 = EmployeeEfficiency.builder()
+                .employeeId(employeeIds.get(0))
+                .employeeEmail("employee1@mail.com")
+                .averageProcessingTimeInSeconds(43)
+                .build();
+
+        EmployeeEfficiency employeeEfficiency2 = EmployeeEfficiency.builder()
+                .employeeId(employeeIds.get(1))
+                .employeeEmail("employee2@mail.com")
+                .averageProcessingTimeInSeconds(34)
+                .build();
+
+        EmployeeEfficiencyResponseDto employeeEfficiencyDto1 = EmployeeEfficiencyResponseDto.builder()
+                .employeeId(employeeIds.get(0))
+                .employeeEmail("employee1@mail.com")
+                .averageProcessingTimeInSeconds(43)
+                .build();
+
+        EmployeeEfficiencyResponseDto employeeEfficiencyDto2 = EmployeeEfficiencyResponseDto.builder()
+                .employeeId(employeeIds.get(1))
+                .employeeEmail("employee2@mail.com")
+                .averageProcessingTimeInSeconds(34)
+                .build();
+
+        List<EmployeeEfficiency> employees = List.of(employeeEfficiency1, employeeEfficiency2);
+
+        when(traceabilityServicePort.getEmployeeEfficiency(employeeIds))
+                .thenReturn(employees);
+        when( modelMapper.map(employeeEfficiency1, EmployeeEfficiencyResponseDto.class))
+                .thenReturn(employeeEfficiencyDto1);
+        when( modelMapper.map(employeeEfficiency2, EmployeeEfficiencyResponseDto.class))
+                .thenReturn(employeeEfficiencyDto2);
+
+        List<EmployeeEfficiencyResponseDto> result = traceabilityHandler.getEmployeeEfficiency(employeeIds);
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals(employeeEfficiencyDto1.getEmployeeId(), result.get(0).getEmployeeId());
+        assertEquals(employeeEfficiencyDto2.getEmployeeId(), result.get(1).getEmployeeId());
+        assertEquals(employeeEfficiencyDto1.getEmployeeEmail(), result.get(0).getEmployeeEmail());
+        assertEquals(employeeEfficiencyDto2.getEmployeeEmail(), result.get(1).getEmployeeEmail());
     }
 }
