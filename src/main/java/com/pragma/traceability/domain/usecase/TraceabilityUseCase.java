@@ -3,6 +3,7 @@ package com.pragma.traceability.domain.usecase;
 import com.pragma.traceability.domain.api.ITraceabilityServicePort;
 import com.pragma.traceability.domain.exception.OrderNotFromCustomerException;
 import com.pragma.traceability.domain.helper.constants.ExceptionConstants;
+import com.pragma.traceability.domain.model.EmployeeEfficiency;
 import com.pragma.traceability.domain.model.RestaurantEfficiency;
 import com.pragma.traceability.domain.model.Traceability;
 import com.pragma.traceability.domain.spi.IJwtSecurityServicePort;
@@ -10,8 +11,10 @@ import com.pragma.traceability.domain.spi.ITraceabilityPersistencePort;
 import lombok.RequiredArgsConstructor;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 public class TraceabilityUseCase implements ITraceabilityServicePort {
@@ -51,9 +54,59 @@ public class TraceabilityUseCase implements ITraceabilityServicePort {
         return restaurantEfficiencies;
     }
 
+    @Override
+    public List<EmployeeEfficiency> getEmployeeEfficiency(List<Long> employeeIds) {
+        List<EmployeeEfficiency> employeeEfficiencies = new ArrayList<>();
+
+        for (Long employeeId : employeeIds) {
+            List<Traceability> traceabilityPreparing = traceabilityPersistencePort.
+                    findAllByEmployeeIdAndNewStatus(employeeId, "PREPARING");
+            List<Traceability> traceabilityDelivered = traceabilityPersistencePort.
+                    findAllByEmployeeIdAndNewStatus(employeeId, "DELIVERED");
+
+            EmployeeEfficiency employeeEfficiency = this.createEmployeeEfficiency(traceabilityPreparing, traceabilityDelivered);
+
+            if (employeeEfficiency != null) {
+                employeeEfficiencies.add(employeeEfficiency);
+            }
+        }
+
+        return employeeEfficiencies;
+    }
+
+    private EmployeeEfficiency createEmployeeEfficiency(List<Traceability> traceabilityPreparing, List<Traceability> traceabilityDelivered) {
+
+        if (traceabilityDelivered.isEmpty()) {
+            return null;
+        }
+
+        double preparationTimes = 0.0;
+
+        for (Traceability tDelivered : traceabilityDelivered) {
+            Long orderId = tDelivered.getOrderId();
+
+            Traceability tPreparing = traceabilityPreparing.stream()
+                    .filter(t -> Objects.equals(t.getOrderId(), orderId))
+                    .findFirst()
+                    .orElseThrow();
+
+            LocalDateTime deliveredDate = tDelivered.getDate();
+            LocalDateTime preparationDate = tPreparing.getDate();
+
+            Duration orderDuration = Duration.between(preparationDate, deliveredDate);
+            preparationTimes += orderDuration.toSeconds();
+        }
+
+        return EmployeeEfficiency.builder()
+                .employeeId(traceabilityDelivered.get(0).getEmployeeId())
+                .employeeEmail(traceabilityDelivered.get(0).getEmployeeEmail())
+                .averageProcessingTimeInSeconds(preparationTimes/traceabilityDelivered.size())
+                .build();
+    }
+
     private RestaurantEfficiency createRestaurantEfficiency(List<Traceability> traceability) {
 
-        Traceability firstTraceability = this.obtainFirstTraceabilityOfTheOrder(traceability);
+        Traceability firstTraceability = this.obtainTraceabilityOfTheOrder(traceability);
         Traceability finalTraceability = this.obtainFinalTraceabilityOfTheOrder(traceability);
 
         if (firstTraceability == null || finalTraceability == null) {
@@ -68,7 +121,7 @@ public class TraceabilityUseCase implements ITraceabilityServicePort {
                 .build();
     }
 
-    private Traceability obtainFirstTraceabilityOfTheOrder(List<Traceability> traceability) {
+    private Traceability obtainTraceabilityOfTheOrder(List<Traceability> traceability) {
         return traceability.stream()
                 .filter(t -> t.getNewStatus().equals("PENDING"))
                 .findFirst()

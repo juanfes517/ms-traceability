@@ -1,5 +1,6 @@
 package com.pragma.traceability.domain.api;
 
+import com.pragma.traceability.domain.model.EmployeeEfficiency;
 import com.pragma.traceability.domain.model.RestaurantEfficiency;
 import com.pragma.traceability.domain.model.Traceability;
 
@@ -12,4 +13,6 @@ public interface ITraceabilityServicePort {
     List<Traceability> getOrderTraceability(Long orderId);
 
     List<RestaurantEfficiency> getRestaurantEfficiency(List<Long> orderIds);
+
+    List<EmployeeEfficiency> getEmployeeEfficiency(List<Long> employeeIds);
 }
