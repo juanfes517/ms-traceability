@@ -6,7 +6,6 @@ import com.pragma.traceability.application.dto.response.RestaurantEfficiencyResp
 import com.pragma.traceability.application.dto.response.TraceabilityResponseDto;
 import com.pragma.traceability.application.handler.ITraceabilityHandler;
 import com.pragma.traceability.domain.api.ITraceabilityServicePort;
-import com.pragma.traceability.domain.model.RestaurantEfficiency;
 import com.pragma.traceability.domain.model.Traceability;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

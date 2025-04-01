@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/traceability")
+@RequestMapping(ApiConstants.TRACEABILITY_CONTROLLER)
 public class TraceabilityController {
 
     private final ITraceabilityHandler traceabilityHandler;
@@ -44,7 +44,7 @@ public class TraceabilityController {
             @ApiResponse(responseCode = "400", description = ApiConstants.BAD_REQUEST_DESCRIPTION, content = @Content),
             @ApiResponse(responseCode = "403", description = ApiConstants.FORBIDDEN_DESCRIPTION, content = @Content)
     })
-    @GetMapping("/order-id")
+    @GetMapping(ApiConstants.GET_ORDER_TRACEABILITY_ENDPOINT)
     public ResponseEntity<List<TraceabilityResponseDto>> getOrderTraceability(@RequestParam Long orderId) {
         return ResponseEntity.ok(traceabilityHandler.getOrderTraceability(orderId));
     }
@@ -54,7 +54,7 @@ public class TraceabilityController {
             @ApiResponse(responseCode = "200", description = ApiConstants.OK_DESCRIPTION, content = @Content),
             @ApiResponse(responseCode = "403", description = ApiConstants.FORBIDDEN_DESCRIPTION, content = @Content)
     })
-    @GetMapping("/restaurant-efficiency")
+    @GetMapping(ApiConstants.GET_RESTAURANT_EFFICIENCY_ENDPOINT)
     public ResponseEntity<List<RestaurantEfficiencyResponseDto>> getRestaurantEfficiency(@RequestParam List<Long> orderIds) {
         return ResponseEntity.ok(traceabilityHandler.getRestaurantEfficiency(orderIds));
     }
@@ -64,7 +64,7 @@ public class TraceabilityController {
             @ApiResponse(responseCode = "200", description = ApiConstants.OK_DESCRIPTION, content = @Content),
             @ApiResponse(responseCode = "403", description = ApiConstants.FORBIDDEN_DESCRIPTION, content = @Content)
     })
-    @GetMapping("/employee-efficiency")
+    @GetMapping(ApiConstants.GET_EMPLOYEE_EFFICIENCY_ENDPOINT)
     public ResponseEntity<List<EmployeeEfficiencyResponseDto>> getEmployeeEfficiency(@RequestParam List<Long> employeeIds) {
         return ResponseEntity.ok(traceabilityHandler.getEmployeeEfficiency(employeeIds));
     }

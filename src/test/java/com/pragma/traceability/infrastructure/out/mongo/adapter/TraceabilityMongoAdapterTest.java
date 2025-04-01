@@ -160,7 +160,7 @@ class TraceabilityMongoAdapterTest {
     }
 
     @Test
-    void findAllByEmployeeIdAndNewStatus_whenIsSuccesful() {
+    void findAllByEmployeeIdAndNewStatus_whenIsSuccessful() {
         Long employeeId = 2L;
         String newStatus = "Status";
 
@@ -197,7 +197,7 @@ class TraceabilityMongoAdapterTest {
         when(modelMapper.map(traceabilityCollection1, Traceability.class))
                 .thenReturn(traceability1);
 
-        List<Traceability> result = traceabilityMongoAdapter.findAllByEmployeeIdAndNewStatus(employeeId, newStatus);
+        List<Traceability> result = traceabilityMongoAdapter.findAllByEmployeeIdAndNewStatus(employeeId, newStatus );
 
         assertNotNull(result);
         assertEquals(traceabilityCollections.size(), result.size());

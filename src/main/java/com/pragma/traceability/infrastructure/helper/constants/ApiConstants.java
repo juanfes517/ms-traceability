@@ -4,6 +4,11 @@ public class ApiConstants {
 
     private ApiConstants() {}
 
+    public static final String TRACEABILITY_CONTROLLER = "/api/v1/traceability";
+    public static final String GET_ORDER_TRACEABILITY_ENDPOINT = "/order-id";
+    public static final String GET_RESTAURANT_EFFICIENCY_ENDPOINT = "/restaurant-efficiency";
+    public static final String GET_EMPLOYEE_EFFICIENCY_ENDPOINT = "/employee-efficiency";
+
     public static final String CREATE_TRACEABILITY_DESCRIPTION = "Create a new traceability";
     public static final String GET_TRACEABILITY_DESCRIPTION = "Get all traceability by order id";
     public static final String GET_RESTAURANT_EFFICIENCY_DESCRIPTION = "Get the efficiency of all order of the restaurant";
