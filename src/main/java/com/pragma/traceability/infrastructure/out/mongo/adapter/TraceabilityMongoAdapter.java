@@ -38,4 +38,13 @@ public class TraceabilityMongoAdapter implements ITraceabilityPersistencePort {
                 .map(traceabilityCollection -> modelMapper.map(traceabilityCollection, Traceability.class))
                 .toList();
     }
+
+    @Override
+    public List<Traceability> findAllByEmployeeIdAndNewStatus(Long employeeId, String newStatus) {
+        List<TraceabilityCollection> traceabilityCollections = traceabilityRepository.findAllByEmployeeIdAndNewStatus(employeeId, newStatus);
+
+        return traceabilityCollections.stream()
+                .map(traceabilityCollection -> modelMapper.map(traceabilityCollection, Traceability.class))
+                .toList();
+    }
 }

@@ -8,4 +8,6 @@ import java.util.List;
 public interface TraceabilityRepository extends MongoRepository<TraceabilityCollection, Long> {
 
     List<TraceabilityCollection> findAllByOrderId(Long orderId);
+
+    List<TraceabilityCollection> findAllByEmployeeIdAndNewStatus(Long employeeId, String newStatus);
 }
